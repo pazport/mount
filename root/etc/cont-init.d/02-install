@@ -1,0 +1,41 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+function log() {
+echo "[MOUNT] ${1}"
+}
+log "**** update system ****" 
+update="update upgrade fix"
+for up2 in ${update};do
+   apk --quiet --no-cache --no-progress $up2
+done
+log "**** install build packages ****"
+inst="wget bc curl unzip shadow linux-headers musl fuse ca-certificates logrotate shadow findutils coreutils openssl libxml2-utils tzdata openntpd grep"
+for dep in ${inst};do
+   apk add --quiet --no-cache --no-progress $dep
+done
+apk del --quiet --no-cache nginx
+rm -rf /var/cache/apk/*
+rm -rf /etc/nginx/nginx.conf
+
+pids="$(pgrep 'nginx')"
+if [ "$pids" != "" ]; then
+  kill -15 $pids
+fi
+addgroup -g 911 abc 1>/dev/null 2>&1
+adduser -u 911 -D -G abc abc 1>/dev/null 2>&1
+log "-> Configure RCLONE || start <- [RCLONE]"
+log "-> Please Wait <- [MOUNT]"
+mkdir -p /config/{rclone,logs,env,scripts,rc-refresh}
+
+wget https://github.com/rclone/rclone/releases/download/v1.55.1/rclone-v1.55.1-linux-amd64.zip -qO rclone.zip && \
+unzip -q rclone.zip && \
+rm -f rclone.zip && \
+mv rclone-*-linux-amd64/rclone /usr/bin/ && \
+rm -rf rclone-**
+chown abc:abc /usr/bin/rclone 1>/dev/null 2>&1
+chmod 755 /usr/bin/rclone 1>/dev/null 2>&1
+rm -rf /tmp/rclone** 1>/dev/null 2>&1
+log "-> Rclone Configured <- [MOUNT]"
+log "-> Installed rclone Version $(rclone --version | awk '{print $2}' | head -n 1 | sed -e 's/v//g' | cut -c1-6) <- [MOUNT]"
+
+#EOF#

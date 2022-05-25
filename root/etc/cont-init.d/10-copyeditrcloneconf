@@ -1,0 +1,32 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+function log() {
+echo "[MOUNT] ${1}"
+}
+if [[ -f "/config/rclone/rclone-docker.conf" ]];then rm -f /config/rclone/rclone-docker.conf;fi
+   log "*** checking rclone.conf"
+while true; do
+if [[ ! -f "/config/rclone.conf" ]];then
+   log "-->> [ WARNING ] ------------------------- [ WARNING ] <<--"
+   log "-->> [ WARNING ] no rclone.conf file found [ WARNING ] <<--"
+   log "-->> [ WARNING ]       sleeping for 30s    [ WARNING ] <<--"
+   log "-->> [ WARNING ] ------------------------- [ WARNING ] <<--"
+   sleep 3 && continue
+else
+   mkdir -p /config/{rclone,logs,env,scripts} && sleep 1 && break
+fi
+done
+log "-> Setting Folder Creating || start <-"
+log "-> Copying rclone.conf <-"
+    find /config -name "rclone.conf" -type f -exec cp {} /config/rclone/rclone-docker.conf \;
+    log "-> Make needed edits to rclone-docker.conf <-"
+    sed -i "s#/opt/appdata/plexguide/.blitzkeys/#/config/keys/#g" /config/rclone/rclone-docker.conf
+    sed -i "s#/opt/appdata/uploader/#/config/keys/#g" /config/rclone/rclone-docker.conf
+    sed -i "s#/opt/appdata/services/uploader/keys/#/config/keys/#g" /config/rclone/rclone-docker.conf
+    sed -i "s#/opt/uploader/keys/#/config/keys/#g" /config/rclone/rclone-docker.conf
+    sed -i '/pgunion/{n;N;d;}' /config/rclone/rclone-docker.conf
+    sed -i '/pgunion/d' /config/rclone/rclone-docker.conf
+    sed -i "s#rotate 4#rotate 1#g" /etc/logrotate.conf
+    sed -i "s#weekly#daily#g" /etc/logrotate.conf
+log "-> rclone_docker.conf edits done <-"
+#<EOF>#

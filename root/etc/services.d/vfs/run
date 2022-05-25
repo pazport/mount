@@ -1,0 +1,14 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+function log() {
+    echo "[Mount] ${1}"
+}
+
+# shellcheck disable=SC2086
+
+umask 022
+vfsrefresh="/app/vfs/vfsrefresh.sh"
+sleep 5
+
+log "-> Starting vfs refresh auto mode <-"
+exec $vfsrefresh

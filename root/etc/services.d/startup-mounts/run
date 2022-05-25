@@ -1,0 +1,14 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+function log() {
+    echo "[Mount] ${1}"
+}
+
+# shellcheck disable=SC2086
+
+umask 022
+startup_mounts="/app/startupp-mounts.sh"
+sleep 5
+
+log "-> Starting mounts <-"
+exec $startup_mounts

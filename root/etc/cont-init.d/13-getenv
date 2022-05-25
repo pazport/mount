@@ -1,0 +1,86 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+config=/config/rclone/rclone-docker.conf
+drivespace=$(df -BG /mnt --local | tail -n +2 | awk '{print $4}'| sed -e 's/G//g')
+checkspace=$(echo $(( ( ${drivespace} ) /4 | bc )) | sed -r 's/([^0-9]*([0-9]*)){1}.*/\2/')
+VFS_CACHE_MAX_SIZE=${VFS_CACHE_MAX_SIZE:-null}
+if [[ ${VFS_CACHE_MAX_SIZE} == 'null' ]]; then
+   VFS_CACHE_MAX_SIZE=${checkspace}G
+else
+   VFS_CACHE_MAX_SIZE=${VFS_CACHE_MAX_SIZE}
+   sed -i "s#VFS_CACHE_MAX_SIZE=G#VFS_CACHE_MAX_SIZE=50G#g" /config/env/rclone.env
+fi
+## function source end
+UAGENT=${UAGENT:-null}
+if [[ ${UAGENT} == 'null' ]];then
+   UAGENT=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+else
+   UAGENT=${UAGENT}
+fi
+RC_PASSWORD=${RC_PASSWORD:-null}
+if [[ ${RC_PASSWORD} == 'null' ]];then
+   RC_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+else
+   RC_PASSWORD=${RC_PASSWORD}
+fi
+
+rcloneenv=/config/env/rclone.env
+rcloneenvcheck=$(cat ${rcloneenv} | wc -l)
+if [[ "${rcloneenvcheck}" != '39' ]]; then
+    rm -rf "${rcloneenv}"
+fi
+if [[ ! -f "${rcloneenv}" ]]; then
+echo -e "#-------------------------------------------------------
+#   RCLONE ENVIROMENTS
+#-------------------------------------------------------
+## USER VALUES
+PUID=${PUID:-911}
+PGID=${PGID:-911}
+TIMEZONE=${TZ:-UTC}
+
+## RCLONE - SETTINGS
+CACHE_INFO_AGE=${CACHE_INFO_AGE:-6h}
+POLL_INTERVAL=${POLL_INTERVAL:-1m}
+UMASK=${UMASK:-022}
+DIR_CACHE_TIME=${DIR_CACHE_TIME:-12h}
+DRIVE_CHUNK_SIZE=${DRIVE_CHUNK_SIZE:-128M}
+BUFFER_SIZE=${BUFFER_SIZE:-32M}
+TMPRCLONE=${TMPRCLONE:-/mnt/rclone_cache}
+UAGENT=${UAGENT}
+TPSLIMIT=${TPSLIMIT:-10}
+TPSBURST=${TPSBURST:-10}
+
+## VFS - SETTINGS
+VFS_CACHE_POLL_INTERVAL=${VFS_CACHE_POLL_INTERVAL:-2m}
+VFS_READ_CHUNK_SIZE=${VFS_READ_CHUNK_SIZE:-128M}
+VFS_CACHE_MAX_AGE=${VFS_CACHE_MAX_AGE:-6h}
+VFS_READ_CHUNK_SIZE_LIMIT=${VFS_READ_CHUNK_SIZE_LIMIT:-4096M}
+VFS_CACHE_MODE=${VFS_CACHE_MODE:-full}
+VFS_CACHE_MAX_SIZE=${VFS_CACHE_MAX_SIZE}
+VFS_REFRESH=${VFS_REFRESH:-12h}
+
+## LOG - SETTINGS 
+LOGLEVEL=${LOGLEVEL:-ERROR}
+LOGLEVEL_RC=${LOGLEVEL_RC:-INFO}
+
+## RC-CONTROLLE
+RC_ADDRESS=${RC_ADDRESS:-5572}
+RC_USER=${RC_USER:-rclone}
+RC_PASSWORD=${RC_PASSWORD}
+#-------------------------------------------------------
+#   RCLONE ENVIROMENTS
+#-------------------------------------------------------" >> /config/env/rclone.env
+fi
+if [[ -f "/config/env/discord.env" ]];then rm -rf /config/env/discord.env;fi
+# TZdate
+apk --quiet --no-cache --no-progress add tzdata
+TMPRCLONE=${TMPRCLONE}
+if [ ! -d ${TMPRCLONE} ]; then   
+   echo " -> Creating  RCLONE_CACHE Folder <- "
+   mkdir -p ${TMPRCLONE} && chown -hR abc:abc ${TMPRCLONE} && chmod -R 775 ${TMPRCLONE}
+else
+   echo " -> RCLONE_CACHE Folder exist || so skipping <- "
+   chown -hR abc:abc ${TMPRCLONE} && chmod -R 775 ${TMPRCLONE}
+fi
+
+#<EOF<#

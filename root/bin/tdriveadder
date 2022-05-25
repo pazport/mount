@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+###########################################
+# some code come from 88lex :-)           #
+# sasync https://github.com/88lex/sasync/ #
+# greetings and many thanks               #
+###########################################
+## add encrypt tdrive support             #
+## add rclone obscure password creater    #
+## add unencrypt tdrive support           #
+###########################################
+
+add() {
+echo -e "Add new Tdrive^ (y/n)";read -i n yes_yn
+if [ "${yes_yn,,}" != "y" ];then
+  echo -e "exit \n"
+  exit
+fi
+
+echo -e "Add new unecrypted-Tdrive (y/n)";read -i n yes_yn
+if [ "${yes_yn,,}" == "y" ];then
+  echo -e "switch to unencrypted Tdrive \n"
+  echo -e ""
+  echo -e "    add name of drive ( sample tdrive2 )";echo;read -i n name
+  if [ "${name,,}" != "" ]; then
+  name=$name
+  else
+  exit 0
+  fi
+  echo -e ""
+  echo -e "    type team-drive id \nteamdriveID can be copied from your browser url when at root of your teamdrive. \nTypically looks like 0APabc123def4" ;echo;read -i n td
+  if [ "${td,,}" != "" ]; then
+  td=$td
+  else
+  exit 0
+  fi
+  echo -e ""
+
+echo -e "\n ##add over shell##\n
+[$name]
+type = drive
+client_id = `rclone config show --config=/config/rclone.conf $rem|grep client_id | awk -F' = ' '{print $2}' | head -n 1`
+client_secret = `rclone config show --config=/config/rclone.conf $rem|grep client_secret | awk -F' = ' '{print $2}' | head -n 1`
+server_side_across_configs = true
+scope = drive
+token = `rclone config show --config=/config/rclone.conf $rem|grep token | awk -F' = ' '{print $2}' | head -n 1`
+team_drive = $td" >> /config/rclone.conf
+else
+  echo -e "switch to encrypted Tdrive \n"
+  echo -e ""
+  echo -e "    add name of drive ( sample tdrive2 )";echo;read -i n name
+  if [ "${name,,}" != "" ]; then
+  name=$name
+  else
+  exit 0
+  fi
+  echo -e ""
+  echo -e "    type team-drive id \nteamdriveID can be copied from your browser url when at root of your teamdrive. \nTypically looks like 0APabc123def4" ;echo;read -i n td
+  if [ "${td,,}" != "" ]; then
+  td=$td
+  else
+  exit 0
+  fi
+  echo -e ""
+
+echo -e "\n 
+##add over shell##\n
+[$name]
+type = drive
+client_id = `rclone config show --config=/config/rclone.conf $rem|grep client_id | awk -F' = ' '{print $2}' | head -n 1 `
+client_secret = `rclone config show --config=/config/rclone.conf $rem|grep client_secret | awk -F' = ' '{print $2}' | head -n 1`
+server_side_across_configs = true
+scope = drive
+token = `rclone config show --config=/config/rclone.conf $rem|grep token | awk -F' = ' '{print $2}' | head -n 1`
+team_drive = $td
+\n
+[tcrypt-$name]
+type = crypt
+remote = $name:/encrypt
+filename_encryption = standard
+directory_name_encryption = true
+password = `rclone config show --config=/config/rclone.conf $rem|grep password | awk -F' = ' '{print $2}' | head -n 1`
+password2 = `rclone config show --config=/config/rclone.conf $rem|grep password2 | awk -F' = ' '{print $2}' | head -n 1`" >> /config/rclone.conf
+rclone mkdir --config=/config/rclone.conf $name:/encrypt
+fi
+}
+
+###########################
+rc_update () {
+add
+}
+
+rc_update $1

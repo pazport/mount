@@ -1,0 +1,13 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+
+# shellcheck disable=SC2086
+function log() {
+    echo "[Mount] ${1}"
+}
+pids="$(ps -ef | grep 'vfsrefresh.sh' | head -n 1 | grep -v grep | awk '{print $1}')"
+if [ "$pids" != "" ]; then
+  kill -15 $pids
+  sleep 2
+fi

@@ -1,0 +1,17 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+## function source
+function log() {
+echo "[Mount] ${1}"
+}
+log "-> Setting Permissions || start <-"
+folder="/config /app /root"
+for i in ${folder}; do
+  find $i -exec chmod a=rx,u+w {} \;
+  find $i -exec chown -hR abc:abc {} \;
+  chown -cf abc:abc /root
+done
+
+log "-> Setting Permissions & Folder || done <-"
+#EOF'

@@ -1,0 +1,139 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+function log() {
+echo "[Mount] ${1}"
+}
+source /config/env/rclone.env
+echo "
+-------------------------------------------------------
+   RCLONE ENVIROMENTS
+-------------------------------------------------------
+   ## USER VALUES
+   PUID                           ${PUID}
+   PGID                           ${PGID}
+   TIMEZONE                       ${TZ}
+
+   ## RCLONE - SETTINGS
+   CACHE_INFO_AGE                 ${CACHE_INFO_AGE}
+   POLL_INTERVAL                  ${POLL_INTERVAL}
+   DIR_CACHE_TIME                 ${DIR_CACHE_TIME}
+   DRIVE_CHUNK_SIZE               ${DRIVE_CHUNK_SIZE}
+   UAGENT                         ${UAGENT}
+   TPSLIMIT                       ${TPSLIMIT}
+   TPSBURST                       ${TPSBURST}
+
+   ## VFS - SETTINGS
+   VFS_CACHE_POLL_INTERVAL        ${VFS_CACHE_POLL_INTERVAL}
+   VFS_READ_CHUNK_SIZE            ${VFS_READ_CHUNK_SIZE}
+   VFS_CACHE_MAX_AGE              ${VFS_CACHE_MAX_AGE}
+   VFS_READ_CHUNK_SIZE_LIMIT      ${VFS_READ_CHUNK_SIZE_LIMIT}
+   VFS_CACHE_MODE                 ${VFS_CACHE_MODE}
+   VFS_CACHE_MAX_SIZE             ${VFS_CACHE_MAX_SIZE}
+   VFS_REFRESH                    ${VFS_REFRESH}
+   BUFFER_SIZE                    ${BUFFER_SIZE}
+   TMPRCLONE                      ${TMPRCLONE}
+
+   ## LOG - SETTINGS 
+   LOGLEVEL                       ${LOGLEVEL}
+   LOGLEVEL_RC                    ${LOGLEVEL_RC}
+
+   ## RC-CONTROLLE
+   RC_ADDRESS                     ${RC_ADDRESS}
+   RC_USER                        ${RC_USER}
+   RC_PASSWORD                    ${RC_PASSWORD}
+"
+##### FOLDER START #####
+SMOUNT=/config/scripts
+SRC=/config/rc-refresh
+SDOWN=/mnt/downloads
+SUNION=/mnt/unionfs
+TMPRCLONE=${TMPRCLONE}
+LOGS=/config/logs
+chown -hR abc:abc ${LOGS} && chmod -R 775 ${LOGS}
+chown -hR abc:abc ${SRC} && chmod -R 775 ${SRC}
+chown -hR abc:abc ${SMOUNT} && chmod -R 775 ${SMOUNT}
+##### FOLDER END #####
+rm -rf /tmp/rclone-mount.file && touch /tmp/rclone-mount.file
+config=/config/rclone/rclone-docker.conf
+##### RUN MOUNT #####
+if [[ ! -d ${TMPRCLONE} ]];then mkdir -p ${TMPRCLONE} && chown -hR abc:abc ${TMPRCLONE}  && chmod -R 775 ${TMPRCLONE};fi
+if [[ ! -d "/mnt/remotes" ]];then mkdir -p /mnt/remotes && chown -hR abc:abc /mnt/remotes && chmod -R 775 /mnt/remotes;fi
+if [[ ! -d "/mnt/unionfs" ]];then mkdir -p ${SUNION} && chown -hR abc:abc ${SUNION} && chmod -R 775 ${SUNION};fi
+if [[ -f ${SMOUNT}/union-mount.sh ]];then rm -rf ${SMOUNT}/union-mount.sh;fi
+if [[ -f ${SRC}/union-rc-file.sh ]];then rm -rf ${SRC}/union-rc-file.sh;fi
+truncate -s 0 /config/logs/**.log >> /dev/null
+echo -n "/mnt/downloads=RW:/mnt/remotes=NC" >>/tmp/rclone-mount.file
+cat <<'EOF' > ${SMOUNT}/union-mount.sh
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash ##
+# rclone mount for union over-shell-exec-command ##
+##########################
+# environment
+source /config/env/rclone.env
+config=/config/rclone/rclone-docker.conf
+# rclone command
+
+rclone mount remote: /mnt/remotes \
+    --config=${config} \
+    --log-file=/config/logs/rclone-union.log \
+    --log-level=${LOGLEVEL} \
+    --uid=${PUID} --gid=${PGID} --umask=${UMASK} \
+    --allow-other --allow-non-empty \
+    --timeout=1h --use-mmap \
+    --cache-dir=${TMPRCLONE} \
+    --tpslimit=${TPSLIMIT} --tpslimit-burst=${TPSBURST} \
+    --no-modtime --no-seek \
+    --ignore-errors --poll-interval=${POLL_INTERVAL} \
+    --user-agent=${UAGENT} --no-checksum \
+    --drive-chunk-size=${DRIVE_CHUNK_SIZE} \
+    --buffer-size=${BUFFER_SIZE} \
+    --dir-cache-time=${DIR_CACHE_TIME} \
+    --cache-info-age=${CACHE_INFO_AGE} \
+    --vfs-cache-poll-interval=${VFS_CACHE_POLL_INTERVAL} \
+    --vfs-cache-mode=${VFS_CACHE_MODE} \
+    --vfs-cache-max-age=${VFS_CACHE_MAX_AGE} \
+    --vfs-cache-max-size=${VFS_CACHE_MAX_SIZE} \
+    --vfs-read-chunk-size-limit=${VFS_READ_CHUNK_SIZE_LIMIT} \
+    --vfs-read-chunk-size=${VFS_READ_CHUNK_SIZE} \
+    --rc --rc-user=${RC_USER} --rc-pass=${RC_PASSWORD} \
+    --rc-addr=localhost:${RC_ADDRESS} --daemon
+###EOF
+EOF
+## rclone union
+value=/tmp/rcunion.union
+if [[ -f ${value} ]];then rm ${value}; fi
+IFS=$'\n'
+filter="$1"
+config=/config/rclone/rclone-docker.conf
+mapfile -t mounts < <(eval rclone listremotes --config=${config} | grep "$filter" | sed '/union/d' | sed '/remote/d' | sed '/GDSA/d' | sort -r)
+for i in ${mounts[@]}; do
+   echo -n "$i " >> ${value}
+done
+sleep 2
+mapfile -t mapped < <(eval cat ${value})
+for i in ${mapped[@]}; do
+   rclone config create remote union upstreams $i search_policy 'all' --config=${config}
+done
+##vfs-refresh
+cat <<'EOF' > ${SRC}/union-rc-file.sh
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash ##
+# rclone rc vfs/refresh for union over-shell-exec-command ##
+##########################
+# environment
+source /config/env/rclone.env
+config=/config/rclone/rclone-docker.conf
+# rclone command
+
+rclone rc vfs/refresh recursive=true \
+       --rc-user=${RC_USER} --rc-pass=${RC_PASSWORD}  \
+       --rc-addr=localhost:${RC_ADDRESS} \
+       --config=${config} \
+       --log-file=/config/logs/rc-refresh-union.log \
+       --log-level=${LOGLEVEL_RC}
+###EOF
+EOF
+chmod a+x ${SRC}/union-rc-file.sh && chown -hR abc:abc ${SRC}/union-rc-file.sh
+chown -hR abc:abc ${TMPRCLONE}
+log "-->> rclone rc refresh file created for union <<--"
+#EOF#
