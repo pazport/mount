@@ -30,9 +30,9 @@ else
    log "-> latest version of MergerFS already installed  <- [MERGERFS]"
    log "-> latest version from trapexit `cat /tmp/mergerfs_version` <- [MERGERFS]"
 fi
-chown -cf abc:abc $(command -v mergerfs)
-chown -cf abc:abc $(command -v mergerfs-fusermount)
-chown -cf abc:abc $(command -v mount.mergerfs)
+chown -cf 1000:1000 $(command -v mergerfs)
+chown -cf 1000:1000 $(command -v mergerfs-fusermount)
+chown -cf 1000:1000 $(command -v mount.mergerfs)
 chmod a+x $(command -v mergerfs)
 chmod a+x $(command -v mergerfs-fusermount)
 chmod a+x $(command -v mount.mergerfs)

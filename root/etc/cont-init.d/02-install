@@ -32,7 +32,7 @@ unzip -q rclone.zip && \
 rm -f rclone.zip && \
 mv rclone-*-linux-amd64/rclone /usr/bin/ && \
 rm -rf rclone-**
-chown abc:abc /usr/bin/rclone 1>/dev/null 2>&1
+chown 1000:1000 /usr/bin/rclone 1>/dev/null 2>&1
 chmod 775 /usr/bin/rclone 1>/dev/null 2>&1
 rm -rf /tmp/rclone** 1>/dev/null 2>&1
 log "-> Rclone Configured <- [MOUNT]"
