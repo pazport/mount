@@ -34,6 +34,8 @@ rm -rf rclone-**
 chown 1000:1000 /usr/bin/rclone 1>/dev/null 2>&1
 chmod 775 /usr/bin/rclone 1>/dev/null 2>&1
 rm -rf /tmp/rclone** 1>/dev/null 2>&1
+chown 1000:1000 /usr/bin/mclone 1>/dev/null 2>&1
+chmod 775 /usr/bin/mclone 1>/dev/null 2>&1
 log "-> Rclone Configured <- [MOUNT]"
 log "-> Installed rclone Version $(rclone --version | awk '{print $2}' | head -n 1 | sed -e 's/v//g' | cut -c1-6) <- [MOUNT]"
 
