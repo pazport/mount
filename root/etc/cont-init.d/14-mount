@@ -58,6 +58,7 @@ config=/config/rclone/rclone-docker.conf
 ##### RUN MOUNT #####
 if [[ ! -d ${TMPRCLONE} ]];then mkdir -p ${TMPRCLONE} && chown -hR 1000:1000 ${TMPRCLONE}  && chmod -R 775 ${TMPRCLONE};fi
 if [[ ! -d "/mnt/remotes" ]];then mkdir -p /mnt/remotes && chown -hR 1000:1000 /mnt/remotes && chmod -R 775 /mnt/remotes;fi
+if [[ -f "/mnt/unionfs" ]];then fusermount -zu  ${SUNION} && rm -rf ${SUNION};fi
 if [[ ! -d "/mnt/unionfs" ]];then mkdir -p ${SUNION} && chown -hR 1000:1000 ${SUNION} && chmod -R 775 ${SUNION};fi
 if [[ -f ${SMOUNT}/union-mount.sh ]];then rm -rf ${SMOUNT}/union-mount.sh;fi
 if [[ -f ${SRC}/union-rc-file.sh ]];then rm -rf ${SRC}/union-rc-file.sh;fi
