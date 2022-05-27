@@ -8,7 +8,7 @@ RUN \
 VOLUME [ "/config" ]
 
 COPY root/ /
-
+COPY root/mclone/mclone /usr/bin/
 EXPOSE 8080
 
 # Setup EntryPoint

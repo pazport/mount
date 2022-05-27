@@ -57,8 +57,8 @@ filter="$1"
 config=/config/rclone/rclone-docker.conf
 POINTS="unionfs remotes"
 for mount in ${POINTS};do
-    command=$(mountpoint -q /mnt/$mount && echo true || echo false)
-    if [[ $command == "false" ]];then fusermount -uzq /mnt/$mount 1>/dev/null 2>&1;fi
+    command=$(mountpoint -q /mnt/unionfs && echo true || echo false)
+    if [[ $command == "false" ]];then fusermount -uzq /mnt/unionfs 1>/dev/null 2>&1;fi
 done
 if [[ ! -d "/mnt/unionfs" ]];then mkdir -p /mnt/unionfs;fi
 if [[ -f "/config/scripts/union-mount.sh" ]];then
