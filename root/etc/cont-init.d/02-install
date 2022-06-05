@@ -20,8 +20,8 @@ pids="$(pgrep 'nginx')"
 if [ "$pids" != "" ]; then
   kill -15 $pids
 fi
-addgroup -g 911 abc 1>/dev/null 2>&1
-adduser -u 911 -D -G abc abc 1>/dev/null 2>&1
+addgroup -g 1000 abc 1>/dev/null 2>&1
+adduser -u 1000 -D -G abc abc 1>/dev/null 2>&1
 log "-> Configure RCLONE || start <- [RCLONE]"
 log "-> Please Wait <- [MOUNT]"
 mkdir -p /config/{rclone,logs,env,scripts,rc-refresh}

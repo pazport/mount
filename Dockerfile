@@ -2,8 +2,7 @@ FROM ghcr.io/linuxserver/baseimage-alpine:3.13
 
 RUN \
   echo "**** install build packages ****" && \
-  apk --quiet --no-cache --no-progress add bash bc findutils coreutils && \
-  rm -rf /var/cache/apk/*
+  apk --quiet --no-cache --no-progress add bash bc findutils coreutils
 
 VOLUME [ "/config" ]
 
