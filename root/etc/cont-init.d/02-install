@@ -16,6 +16,7 @@ done
 apk del --quiet --no-cache nginx
 rm -rf /var/cache/apk/*
 rm -rf /etc/nginx/nginx.conf
+
 pids="$(pgrep 'nginx')"
 if [ "$pids" != "" ]; then
   kill -15 $pids
