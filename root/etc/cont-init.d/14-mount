@@ -73,7 +73,7 @@ source /config/env/rclone.env
 config=/config/rclone/rclone-docker.conf
 # rclone command
 
-rclone mount remote: /mnt/remotes \
+mclone mount remote: /mnt/remotes \
     --config=${config} \
     --log-file=/config/logs/rclone-union.log \
     --log-level=${LOGLEVEL} \
@@ -112,20 +112,20 @@ done
 sleep 2
 mapfile -t mapped < <(eval cat ${value})
 for i in ${mapped[@]}; do
-   rclone config create remote union upstreams $i search_policy 'all' --config=${config}
+   mclone config create remote union upstreams $i search_policy 'all' --config=${config}
 done
 ##vfs-refresh
 cat <<'EOF' > ${SRC}/union-rc-file.sh
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash ##
-# rclone rc vfs/refresh for union over-shell-exec-command ##
+# mclone rc vfs/refresh for union over-shell-exec-command ##
 ##########################
 # environment
 source /config/env/rclone.env
 config=/config/rclone/rclone-docker.conf
 # rclone command
 
-rclone rc vfs/refresh recursive=true \
+mclone rc vfs/refresh recursive=true \
        --rc-user=${RC_USER} --rc-pass=${RC_PASSWORD}  \
        --rc-addr=localhost:${RC_ADDRESS} \
        --config=${config} \

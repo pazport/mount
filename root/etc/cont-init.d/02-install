@@ -25,15 +25,7 @@ adduser -u 911 -D -G abc abc 1>/dev/null 2>&1
 log "-> Configure RCLONE || start <- [RCLONE]"
 log "-> Please Wait <- [MOUNT]"
 mkdir -p /config/{rclone,logs,env,scripts,rc-refresh}
-
-wget https://github.com/rclone/rclone/releases/download/v1.55.1/rclone-v1.55.1-linux-amd64.zip -qO rclone.zip && \
-unzip -q rclone.zip && \
-rm -f rclone.zip && \
-mv rclone-*-linux-amd64/rclone /usr/bin/ && \
-rm -rf rclone-**
-chown 1000:1000 /usr/bin/rclone 1>/dev/null 2>&1
-chmod 775 /usr/bin/rclone 1>/dev/null 2>&1
-rm -rf /tmp/rclone** 1>/dev/null 2>&1
+mv /mclone/mclone /usr/bin/
 log "-> Rclone Configured <- [MOUNT]"
 log "-> Installed rclone Version $(rclone --version | awk '{print $2}' | head -n 1 | sed -e 's/v//g' | cut -c1-6) <- [MOUNT]"
 

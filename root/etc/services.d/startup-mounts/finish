@@ -9,7 +9,7 @@ IFS=$'\n'
 filter="$1"
 config=/config/rclone/rclone-docker.conf
 #rclone listremotes | gawk "$filter"
-mapfile -t mounts < <(eval rclone listremotes --config=${config} | grep "$filter" | sed -e 's/[GDSA00-99C:]//g' | sed '/^$/d')
+mapfile -t mounts < <(eval mclone listremotes --config=${config} | grep "$filter" | sed -e 's/[GDSA00-99C:]//g' | sed '/^$/d')
 ## function source end
 
 if [[ "$(command -v fusermount | wc -l)" != "1" ]]; then
