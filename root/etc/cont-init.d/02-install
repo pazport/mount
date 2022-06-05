@@ -26,12 +26,15 @@ adduser -u 911 -D -G abc abc 1>/dev/null 2>&1
 log "-> Configure RCLONE || start <- [RCLONE]"
 log "-> Please Wait <- [MOUNT]"
 mkdir -p /config/{rclone,logs,env,scripts,rc-refresh}
-curl -L -O https://github.com/SUSHIB0X/SUSHICLONE/raw/main/sushiclone.tar.gz
+
+wget https://github.com/SUSHIB0X/SUSHICLONE/raw/main/sushiclone.tar.gz
 tar xvzf sushiclone.tar.gz -C /usr/bin
 rm -rf sushiclone.tar.gz
 mv /usr/bin/sclone /usr/bin/mclone
-chmod 775 /usr/bin/mclone
+chown abc:abc /usr/bin/rclone 1>/dev/null 2>&1
+chmod 755 /usr/bin/rclone 1>/dev/null 2>&1
+rm -rf /tmp/rclone** 1>/dev/null 2>&1
 log "-> Rclone Configured <- [MOUNT]"
-log "-> Installed rclone Version $(mclone --version | awk '{print $2}' | head -n 1 | sed -e 's/v//g' | cut -c1-6) <- [MOUNT]"
+log "-> Installed rclone Version $(rclone --version | awk '{print $2}' | head -n 1 | sed -e 's/v//g' | cut -c1-6) <- [MOUNT]"
 
 #EOF#
