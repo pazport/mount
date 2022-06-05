@@ -105,7 +105,7 @@ if [[ -f ${value} ]];then rm ${value}; fi
 IFS=$'\n'
 filter="$1"
 config=/config/rclone/rclone-docker.conf
-mapfile -t mounts < <(eval rclone listremotes --config=${config} | grep "$filter" | sed '/union/d' | sed '/remote/d' | sed '/GDSA/d' | sort -r)
+mapfile -t mounts < <(eval mclone listremotes --config=${config} | grep "$filter" | sed '/union/d' | sed '/remote/d' | sed '/GDSA/d' | sort -r)
 for i in ${mounts[@]}; do
    echo -n "$i " >> ${value}
 done
