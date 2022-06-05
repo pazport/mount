@@ -20,12 +20,13 @@ pids="$(pgrep 'nginx')"
 if [ "$pids" != "" ]; then
   kill -15 $pids
 fi
-addgroup -g 1000 abc 1>/dev/null 2>&1
-adduser -u 1000 -D -G abc abc 1>/dev/null 2>&1
+addgroup -g 911 abc 1>/dev/null 2>&1
+adduser -u 911 -D -G abc abc 1>/dev/null 2>&1
 log "-> Configure RCLONE || start <- [RCLONE]"
 log "-> Please Wait <- [MOUNT]"
 mkdir -p /config/{rclone,logs,env,scripts,rc-refresh}
-mv /mclone/mclone /usr/bin/
+
+mv /mclone/mclone /usr/bin
 log "-> Rclone Configured <- [MOUNT]"
 log "-> Installed rclone Version $(rclone --version | awk '{print $2}' | head -n 1 | sed -e 's/v//g' | cut -c1-6) <- [MOUNT]"
 
