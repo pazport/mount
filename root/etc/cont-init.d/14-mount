@@ -133,7 +133,7 @@ mclone rc vfs/refresh recursive=true \
        --log-level=${LOGLEVEL_RC}
 ###EOF
 EOF
-chmod a+x ${SRC}/union-rc-file.sh && chown -hR 775:775 ${SRC}/union-rc-file.sh
-chown -hR 775:775 ${TMPRCLONE}
+chmod a+x ${SRC}/union-rc-file.sh && chown -hR abc:abc ${SRC}/union-rc-file.sh
+chown -hR abc:abc ${TMPRCLONE}
 log "-->> rclone rc refresh file created for union <<--"
 #EOF#

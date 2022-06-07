@@ -30,7 +30,7 @@ wget --quiet https://github.com/SUSHIB0X/SUSHICLONE/raw/main/sushiclone.tar.gz
 tar xvzf sushiclone.tar.gz -C /usr/bin
 rm -rf sushiclone.tar.gz
 mv /usr/bin/sclone /usr/bin/mclone
-chown 775:775 /usr/bin/mclone 1>/dev/null 2>&1
+chown abc:abc /usr/bin/mclone 1>/dev/null 2>&1
 chmod 775 /usr/bin/mclone 1>/dev/null 2>&1
 log "-> Mclone installed :) <- [MOUNT]"
 log "-> Installed rclone Version $(mclone --version | awk '{print $2}' | head -n 1 | sed -e 's/v//g' | cut -c1-6) <- [MOUNT]"

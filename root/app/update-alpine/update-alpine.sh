@@ -8,7 +8,7 @@ log "-> update rclone || start <-"
 
 if [[ -x $(command -v rclone) ]];then
     mclone selfupdate --config=/config/rclone/rclone-docker.conf --stable
-    chown -cf 775:775 /root/
+    chown -cf abc:abc /root/
 fi
 log "-> update rclone || done <-"
 
