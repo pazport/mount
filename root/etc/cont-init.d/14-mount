@@ -49,9 +49,9 @@ SDOWN=/mnt/downloads
 SUNION=/mnt/unionfs
 TMPRCLONE=${TMPRCLONE}
 LOGS=/config/logs
-chown -hR 775:775 ${LOGS} && chmod -R 775 ${LOGS}
-chown -hR 775:775 ${SRC} && chmod -R 775 ${SRC}
-chown -hR 775:775 ${SMOUNT} && chmod -R 775 ${SMOUNT}
+chown -hR abc:abc ${LOGS} && chmod -R 775 ${LOGS}
+chown -hR abc:abc ${SRC} && chmod -R 775 ${SRC}
+chown -hR abc:abc ${SMOUNT} && chmod -R 775 ${SMOUNT}
 ##### FOLDER END #####
 rm -rf /tmp/rclone-mount.file && touch /tmp/rclone-mount.file
 config=/config/rclone/rclone-docker.conf
