@@ -64,7 +64,7 @@ LOGLEVEL=${LOGLEVEL:-ERROR}
 LOGLEVEL_RC=${LOGLEVEL_RC:-INFO}
 
 ## RC-CONTROLLE
-RC_ADDRESS=${RC_ADDRESS:-19988}
+RC_ADDRESS=${RC_ADDRESS:-5572}
 RC_USER=${RC_USER:-rclone}
 RC_PASSWORD=${RC_PASSWORD}
 #-------------------------------------------------------
