@@ -64,7 +64,7 @@ LOGLEVEL=${LOGLEVEL:-ERROR}
 LOGLEVEL_RC=${LOGLEVEL_RC:-INFO}
 
 ## RC-CONTROLLE
-RC_ADDRESS=${RC_ADDRESS:-5572}
+RC_ADDRESS=${RC_ADDRESS:-19999}
 RC_USER=${RC_USER:-rclone}
 RC_PASSWORD=${RC_PASSWORD}
 #-------------------------------------------------------
@@ -77,10 +77,10 @@ apk --quiet --no-cache --no-progress add tzdata
 TMPRCLONE=${TMPRCLONE}
 if [ ! -d ${TMPRCLONE} ]; then   
    echo " -> Creating  RCLONE_CACHE Folder <- "
-   mkdir -p ${TMPRCLONE} && chown -hR 1000:1000 ${TMPRCLONE} && chmod -R 775 ${TMPRCLONE}
+   mkdir -p ${TMPRCLONE} && chown -hR 775:775 ${TMPRCLONE} && chmod -R 775 ${TMPRCLONE}
 else
    echo " -> RCLONE_CACHE Folder exist || so skipping <- "
-   chown -hR 1000:1000 ${TMPRCLONE} && chmod -R 775 ${TMPRCLONE}
+   chown -hR 775:775 ${TMPRCLONE} && chmod -R 775 ${TMPRCLONE}
 fi
 
 #<EOF<#

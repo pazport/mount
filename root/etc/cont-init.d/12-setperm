@@ -9,8 +9,8 @@ log "-> Setting Permissions || start <-"
 folder="/config /app /root"
 for i in ${folder}; do
   find $i -exec chmod a=rx,u+w {} \;
-  find $i -exec chown -hR 1000:1000 {} \;
-  chown -cf 1000:1000 /root
+  find $i -exec chown -hR 775:775 {} \;
+  chown -cf 775:775 /root
 done
 
 log "-> Setting Permissions & Folder || done <-"
