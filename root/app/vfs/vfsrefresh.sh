@@ -18,7 +18,7 @@ done
 while true;do
 SRC=/config/rc-refresh/union-rc-file.sh
 if [[ -f ${SRC} ]];then
-   bash ${SRC} && chmod a+x ${SRC} && chown -hR 775:775 ${SRC} && truncate -s 0 /config/logs/*.log
+   bash ${SRC} && chmod a+x ${SRC} && chown -hR abc:abc ${SRC} && truncate -s 0 /config/logs/*.log
    break
 fi
 done   
