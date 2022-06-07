@@ -26,7 +26,7 @@ logdocker " -->      STOP DOCKERS      <---"
 logdocker " -->    MERGERFS CRASHED    <---"
 logdocker " -------------------------------"
 container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'ple|arr|emby|jelly')
-docker stop $container >> /dev/null
+#docker stop $container >> /dev/null
 sleep 2
 }
 function restart_container() {
@@ -35,12 +35,12 @@ logdocker " -->   RESTART DOCKER PART  <---"
 logdocker " -->         STARTED        <---"
 logdocker " -------------------------------"
 container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'ple|arr|emby|jelly')
-docker stop $container >> /dev/null
+#docker stop $container >> /dev/null
 logdocker " -->> sleeping 5secs for graceful stopped containers <<--"
 sleep 5
 container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'ple|arr|emby|jelly')
 #### LIST SOME DOCKER TO RESTART ####
-docker start $container >> /dev/null
+#docker start $container >> /dev/null
 logdocker " -------------------------------"
 logdocker " -->   RESTART DOCKER PART  <---"
 logdocker " -->        FINISHED        <---"
@@ -60,7 +60,7 @@ for mount in ${POINTS};do
     command=$(mountpoint -q /mnt/$mount && echo true || echo false)
     if [[ $command == "false" ]];then fusermount -uzq /mnt/$mount 1>/dev/null 2>&1;fi
 done
-if [[ ! -d "/mnt/unionfs" ]];then fusermount -uz /mnt/unionfs;then mkdir -p /mnt/unionfs;fi
+if [[ ! -d "/mnt/unionfs" ]];then fusermount -uz /mnt/unionfs && mkdir -p /mnt/unionfs;fi
 if [[ -f "/config/scripts/union-mount.sh" ]];then
    bash /config/scripts/union-mount.sh
 fi
