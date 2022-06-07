@@ -7,7 +7,7 @@ echo "[UPDATE] ${1}"
 log "-> update rclone || start <-"
 
 if [[ -x $(command -v rclone) ]];then
-    rclone selfupdate --config=/config/rclone/rclone-docker.conf --stable
+    mclone selfupdate --config=/config/rclone/rclone-docker.conf --stable
     chown -cf 1000:1000 /root/
 fi
 log "-> update rclone || done <-"

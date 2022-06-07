@@ -16,6 +16,7 @@ done
 apk del --quiet --no-cache nginx
 rm -rf /var/cache/apk/*
 rm -rf /etc/nginx/nginx.conf
+
 pids="$(pgrep 'nginx')"
 if [ "$pids" != "" ]; then
   kill -15 $pids
@@ -25,15 +26,10 @@ adduser -u 911 -D -G abc abc 1>/dev/null 2>&1
 log "-> Configure RCLONE || start <- [RCLONE]"
 log "-> Please Wait <- [MOUNT]"
 mkdir -p /config/{rclone,logs,env,scripts,rc-refresh}
-mv /mclone/mclone /usr/bin
-wget https://github.com/rclone/rclone/releases/download/v1.55.1/rclone-v1.55.1-linux-amd64.zip -qO rclone.zip && \
-unzip -q rclone.zip && \
-rm -f rclone.zip && \
-mv rclone-*-linux-amd64/rclone /usr/bin/ && \
-rm -rf rclone-**
-chown 1000:1000 /usr/bin/rclone 1>/dev/null 2>&1
-chmod 775 /usr/bin/rclone 1>/dev/null 2>&1
-rm -rf /tmp/rclone** 1>/dev/null 2>&1
+wget https://github.com/SUSHIB0X/SUSHICLONE/raw/main/sushiclone.tar.gz
+tar xvzf sushiclone.tar.gz -C /usr/bin
+rm -rf sushiclone.tar.gz
+mv /usr/bin/sclone /usr/bin/mclone
 chown 1000:1000 /usr/bin/mclone 1>/dev/null 2>&1
 chmod 775 /usr/bin/mclone 1>/dev/null 2>&1
 log "-> Rclone Configured <- [MOUNT]"
