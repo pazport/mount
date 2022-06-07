@@ -33,5 +33,6 @@ for i in ${mounts[@]}; do
     find /mnt/drive-$i -type d -empty -delete
     sleep 2
     find /mnt/unionfs -type d -empty -delete
+    sleep 5
 done
 sleep 10
