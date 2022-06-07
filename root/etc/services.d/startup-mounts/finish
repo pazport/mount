@@ -28,7 +28,10 @@ for i in ${mounts[@]}; do
     sleep 2
     fusermount -uz /mnt/drive-$i
     sleep 2
+    fusermount -uz /mnt/unionfs
+    sleep 2
     find /mnt/drive-$i -type d -empty -delete
     sleep 2
+    find /mnt/unionfs -type d -empty -delete
 done
 sleep 10
