@@ -60,7 +60,7 @@ for mount in ${POINTS};do
     command=$(mountpoint -q /mnt/$mount && echo true || echo false)
     if [[ $command == "false" ]];then fusermount -uzq /mnt/$mount 1>/dev/null 2>&1;fi
 done
-if [[ ! -d "/mnt/unionfs" ]];then mkdir -p /mnt/unionfs;fi
+if [[ ! -d "/mnt/unionfs" ]];then fusermount -uz /mnt/unionfs;then mkdir -p /mnt/unionfs;fi
 if [[ -f "/config/scripts/union-mount.sh" ]];then
    bash /config/scripts/union-mount.sh
 fi
