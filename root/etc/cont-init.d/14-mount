@@ -14,24 +14,27 @@ echo "
    TIMEZONE                       ${TZ}
 
    ## RCLONE - SETTINGS
-   CACHE_INFO_AGE                 ${CACHE_INFO_AGE}
-   POLL_INTERVAL                  ${POLL_INTERVAL}
-   DIR_CACHE_TIME                 ${DIR_CACHE_TIME}
-   DRIVE_CHUNK_SIZE               ${DRIVE_CHUNK_SIZE}
-   UAGENT                         ${UAGENT}
-   TPSLIMIT                       ${TPSLIMIT}
-   TPSBURST                       ${TPSBURST}
+   #CACHE_INFO_AGE                ${CACHE_INFO_AGE:-6h}
+   POLL_INTERVAL                  ${POLL_INTERVAL:-30s}
+   UMASK                          ${UMASK:-002}
+   DIR_CACHE_TIME                 ${DIR_CACHE_TIME:-8760h}
+   #DRIVE_CHUNK_SIZE              ${DRIVE_CHUNK_SIZE:-128M}
+   BUFFER_SIZE                    ${BUFFER_SIZE:-1G}
+   TMPRCLONE                      ${TMPRCLONE:-/mnt/rclone_cache}
+   UAGENT                         ${UAGENT:-MCLONE}
+   #TPSLIMIT                      ${TPSLIMIT:-100}
+   #TPSBURST                      ${TPSBURST:-250}
+   MAX-READ-AHEAD                 ${MAX-READ-AHEAD:-2G}
 
    ## VFS - SETTINGS
-   VFS_CACHE_POLL_INTERVAL        ${VFS_CACHE_POLL_INTERVAL}
-   VFS_READ_CHUNK_SIZE            ${VFS_READ_CHUNK_SIZE}
-   VFS_CACHE_MAX_AGE              ${VFS_CACHE_MAX_AGE}
-   VFS_READ_CHUNK_SIZE_LIMIT      ${VFS_READ_CHUNK_SIZE_LIMIT}
-   VFS_CACHE_MODE                 ${VFS_CACHE_MODE}
-   VFS_CACHE_MAX_SIZE             ${VFS_CACHE_MAX_SIZE}
-   VFS_REFRESH                    ${VFS_REFRESH}
-   BUFFER_SIZE                    ${BUFFER_SIZE}
-   TMPRCLONE                      ${TMPRCLONE}
+   VFS_CACHE_POLL_INTERVAL        ${VFS_CACHE_POLL_INTERVAL:-15s}
+   VFS_READ_CHUNK_SIZE            ${VFS_READ_CHUNK_SIZE:-32M}
+   VFS_CACHE_MAX_AGE              ${VFS_CACHE_MAX_AGE:-72h}
+   VFS_READ_CHUNK_SIZE_LIMIT      ${VFS_READ_CHUNK_SIZE_LIMIT:-1024M}
+   VFS_CACHE_MODE                 ${VFS_CACHE_MODE:-full}
+   VFS_CACHE_MAX_SIZE             ${VFS_CACHE_MAX_SIZE:-100G}
+   #VFS_REFRESH                   ${VFS_REFRESH:-12h}
+   VFS-READ-AHEAD                 ${VFS-READ-AHEAD:-1G}
 
    ## LOG - SETTINGS 
    LOGLEVEL                       ${LOGLEVEL}
@@ -81,7 +84,6 @@ mclone mount remote: /mnt/remotes \
     --allow-other --allow-non-empty \
     --timeout=1h --use-mmap \
     --cache-dir=${TMPRCLONE} \
-    --tpslimit=${TPSLIMIT} --tpslimit-burst=${TPSBURST} \
     --no-modtime --no-seek \
     --ignore-errors --poll-interval=${POLL_INTERVAL} \
     --user-agent=${UAGENT} --no-checksum \
@@ -95,7 +97,7 @@ mclone mount remote: /mnt/remotes \
     --vfs-cache-max-size=${VFS_CACHE_MAX_SIZE} \
     --vfs-read-chunk-size-limit=${VFS_READ_CHUNK_SIZE_LIMIT} \
     --vfs-read-chunk-size=${VFS_READ_CHUNK_SIZE} \
-    --daemon
+    --daemon --multi-thread-streams=20 
 ###EOF
 EOF
 ## rclone union
