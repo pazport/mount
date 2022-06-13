@@ -84,7 +84,6 @@ mclone mount remote: /mnt/remotes \
     --user-agent=${UAGENT} --no-checksum \
     --buffer-size=${BUFFER_SIZE} \
     --dir-cache-time=${DIR_CACHE_TIME} \
-    --cache-info-age=${CACHE_INFO_AGE} \
     --max-read-ahead=${MAX-READ-AHEAD} --vfs-read-ahead=${VFS-READ-AHEAD} \
     --vfs-cache-poll-interval=${VFS_CACHE_POLL_INTERVAL} \
     --vfs-cache-mode=${VFS_CACHE_MODE} \
