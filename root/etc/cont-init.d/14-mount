@@ -14,16 +14,12 @@ echo "
    TIMEZONE                       ${TZ}
 
    ## RCLONE - SETTINGS
-   #CACHE_INFO_AGE                ${CACHE_INFO_AGE:-6h}
    POLL_INTERVAL                  ${POLL_INTERVAL:-30s}
    UMASK                          ${UMASK:-002}
    DIR_CACHE_TIME                 ${DIR_CACHE_TIME:-8760h}
-   #DRIVE_CHUNK_SIZE              ${DRIVE_CHUNK_SIZE:-128M}
    BUFFER_SIZE                    ${BUFFER_SIZE:-1G}
    TMPRCLONE                      ${TMPRCLONE:-/mnt/rclone_cache}
    UAGENT                         ${UAGENT:-MCLONE}
-   #TPSLIMIT                      ${TPSLIMIT:-100}
-   #TPSBURST                      ${TPSBURST:-250}
    MAX-READ-AHEAD                 ${MAX-READ-AHEAD:-2G}
 
    ## VFS - SETTINGS
@@ -33,7 +29,6 @@ echo "
    VFS_READ_CHUNK_SIZE_LIMIT      ${VFS_READ_CHUNK_SIZE_LIMIT:-1024M}
    VFS_CACHE_MODE                 ${VFS_CACHE_MODE:-full}
    VFS_CACHE_MAX_SIZE             ${VFS_CACHE_MAX_SIZE:-100G}
-   #VFS_REFRESH                   ${VFS_REFRESH:-12h}
    VFS-READ-AHEAD                 ${VFS-READ-AHEAD:-1G}
 
    ## LOG - SETTINGS 
@@ -87,10 +82,10 @@ mclone mount remote: /mnt/remotes \
     --no-modtime --no-seek \
     --ignore-errors --poll-interval=${POLL_INTERVAL} \
     --user-agent=${UAGENT} --no-checksum \
-    --drive-chunk-size=${DRIVE_CHUNK_SIZE} \
     --buffer-size=${BUFFER_SIZE} \
     --dir-cache-time=${DIR_CACHE_TIME} \
     --cache-info-age=${CACHE_INFO_AGE} \
+    --max-read-ahead=${MAX-READ-AHEAD} --vfs-read-ahead=${VFS-READ-AHEAD} \
     --vfs-cache-poll-interval=${VFS_CACHE_POLL_INTERVAL} \
     --vfs-cache-mode=${VFS_CACHE_MODE} \
     --vfs-cache-max-age=${VFS_CACHE_MAX_AGE} \
