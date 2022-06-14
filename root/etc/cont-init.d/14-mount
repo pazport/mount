@@ -82,6 +82,7 @@ mclone mount remote: /mnt/remotes \
     --drive-use-trash=true --drive-pacer-burst=5000 \
     --cache-dir=${TMPRCLONE} \
     --no-modtime --no-seek \
+    --transfers=12 \
     --ignore-errors --poll-interval=${POLL_INTERVAL} \
     --user-agent=${UAGENT} --no-checksum \
     --buffer-size=${BUFFER_SIZE} \

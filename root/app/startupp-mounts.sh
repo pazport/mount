@@ -87,7 +87,7 @@ fi
 
 MERGERFS_PID=$(pgrep mergerfs)
 
-log "MERGERFS PID: ${MERGERFS_PID}"
+"MERGERFS PID: ${MERGERFS_PID}"
 
 while true; do
    MERGERFS_PID=$(pgrep mergerfs)
