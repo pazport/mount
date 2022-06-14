@@ -8,7 +8,6 @@ function log() {
 
 umask 022
 vfsrefresh="/app/vfs/vfsrefresh.sh"
-sleep 5
+sleep 12h
 
-log "-> Starting vfs refresh auto mode <-"
 exec $vfsrefresh

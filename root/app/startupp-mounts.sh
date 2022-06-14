@@ -25,7 +25,7 @@ logdocker " -------------------------------"
 logdocker " -->      STOP DOCKERS      <---"
 logdocker " -->    MERGERFS CRASHED    <---"
 logdocker " -------------------------------"
-container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'ple|arr|emby|jelly')
+container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'plex1|arr|emby|jelly')
 #docker stop $container >> /dev/null
 sleep 2
 }
@@ -34,13 +34,13 @@ logdocker " -------------------------------"
 logdocker " -->   RESTART DOCKER PART  <---"
 logdocker " -->         STARTED        <---"
 logdocker " -------------------------------"
-container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'ple|arr|emby|jelly')
-#docker stop $container >> /dev/null
+container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'plex1|arr|emby|jelly')
+docker stop $container >> /dev/null
 logdocker " -->> sleeping 5secs for graceful stopped containers <<--"
 sleep 5
-container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'ple|arr|emby|jelly')
+container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'plex1|arr|emby|jelly')
 #### LIST SOME DOCKER TO RESTART ####
-#docker start $container >> /dev/null
+docker start $container >> /dev/null
 logdocker " -------------------------------"
 logdocker " -->   RESTART DOCKER PART  <---"
 logdocker " -->        FINISHED        <---"
@@ -76,11 +76,11 @@ dockersock=$(curl --silent --output /dev/null --show-error --fail --unix-socket 
 #### RESTART DOCKER #### 
 if [[ "${dockersock}" != '' ]];then
    sleep 1
-   logdocker " [ WARNING ] SOME APPS NEED A RESTART [ WARNING ]"
-   logdocker "   SAMPLE :"
-   logdocker "   PLEX / SONARR / LIDARR / RADARR / EMBY"
-   logdocker " [ WARNING ] SOME APPS NEED A RESTART [ WARNING ]"
-   sleep 30
+logdocker " [ WARNING ] SOME APPS NEED A RESTART [ WARNING ]"
+logdocker "   SAMPLE :"
+logdocker "   PLEX / SONARR / LIDARR / RADARR / EMBY"
+logdocker " [ WARNING ] SOME APPS NEED A RESTART [ WARNING ]"
+   sleep 5
 else
    startupdocker
 fi
@@ -92,7 +92,7 @@ log "MERGERFS PID: ${MERGERFS_PID}"
 while true; do
    MERGERFS_PID=$(pgrep mergerfs)
    if [ "${MERGERFS_PID}" ] && [ -e /proc/${MERGERFS_PID} ]; then
-      sleep 5 && echo "rclone_union and mergerfs is mounted since $(date)"
+      sleep 20 && echo "rclone_union and mergerfs is mounted since $(date)"
       continue
    else
       sleep 5 && crashed
