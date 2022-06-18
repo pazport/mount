@@ -20,6 +20,10 @@ fi
 log "-> Stop mergerfs <-"
 kill -9 $(pgrep mergerfs)
 
+log "-> stopping union <-"
+    sleep 2
+    fusermount -uz /mnt/unionfs-$i
+    find /mnt/unionfs-$i -type d -empty -delete
 log "-> Stopping the mounts <-"
 for i in ${mounts[@]}; do
     log "-> Stop Mounting $i <-"
@@ -27,12 +31,7 @@ for i in ${mounts[@]}; do
     kill -9 $pids 
     sleep 2
     fusermount -uz /mnt/drive-$i
-    sleep 2
-    fusermount -uz /mnt/unionfs
-    sleep 2
     find /mnt/drive-$i -type d -empty -delete
-    sleep 2
-    find /mnt/unionfs -type d -empty -delete
     sleep 5
 done
-sleep 10
+sleep 5
