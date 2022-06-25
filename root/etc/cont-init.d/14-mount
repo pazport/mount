@@ -95,7 +95,7 @@ mclone mount remote: /mnt/remotes \
     --drive-server-side-across-configs=true \
     --vfs-read-chunk-size-limit=${VFS_READ_CHUNK_SIZE_LIMIT} \
     --vfs-read-chunk-size=${VFS_READ_CHUNK_SIZE} \
-    --multi-thread-streams=20 
+    --multi-thread-streams=20 --daemon
 ###EOF
 EOF
 ## rclone union
