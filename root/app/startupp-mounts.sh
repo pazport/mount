@@ -26,7 +26,7 @@ logdocker " -->      STOP DOCKERS      <---"
 logdocker " -->    MERGERFS CRASHED    <---"
 logdocker " -------------------------------"
 container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'plex1|arr|emby|jelly')
-docker stop $container >> /dev/null
+#docker stop $container >> /dev/null
 sleep 2
 }
 function restart_container() {
