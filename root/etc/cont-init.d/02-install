@@ -9,7 +9,7 @@ for up2 in ${update};do
    apk --quiet --no-cache --no-progress $up2
 done
 log "**** install build packages ****"
-inst="wget bc curl unzip shadow linux-headers musl fuse ca-certificates logrotate shadow findutils coreutils openssl libxml2-utils tzdata openntpd grep"
+inst="wget bc curl unzip shadow linux-headers musl fuse ca-certificates logrotate shadow findutils coreutils openssl libxml2-utils tzdata openntpd grep shadow-conv"
 for dep in ${inst};do
    apk add --quiet --no-cache --no-progress $dep
 done
