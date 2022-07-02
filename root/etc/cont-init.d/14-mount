@@ -60,7 +60,7 @@ if [[ ! -d "/mnt/unionfs" ]];then mkdir -p ${SUNION} && chown -hR abc:abc ${SUNI
 if [[ -f ${SMOUNT}/union-mount.sh ]];then rm -rf ${SMOUNT}/union-mount.sh;fi
 if [[ -f ${SRC}/union-rc-file.sh ]];then rm -rf ${SRC}/union-rc-file.sh;fi
 truncate -s 0 /config/logs/**.log >> /dev/null
-echo -n "/mnt/downloads=RW:/mnt/remotes=NC" >>/tmp/rclone-mount.file
+echo -n "/mnt/downloads=RW:/mnt/remotes=RW" >>/tmp/rclone-mount.file
 cat <<'EOF' > ${SMOUNT}/union-mount.sh
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash ##
@@ -82,7 +82,7 @@ mclone mount remote: /mnt/remotes \
     --drive-use-trash=true --drive-pacer-burst=5000 \
     --cache-dir=${TMPRCLONE} \
     --no-modtime --no-seek \
-    --transfers=12 \
+    --transfers=4 \
     --ignore-errors --poll-interval=${POLL_INTERVAL} \
     --user-agent=${UAGENT} --no-checksum \
     --buffer-size=${BUFFER_SIZE} \
@@ -95,7 +95,7 @@ mclone mount remote: /mnt/remotes \
     --drive-server-side-across-configs=true \
     --vfs-read-chunk-size-limit=${VFS_READ_CHUNK_SIZE_LIMIT} \
     --vfs-read-chunk-size=${VFS_READ_CHUNK_SIZE} \
-    --multi-thread-streams=20 --daemon
+    --multi-thread-streams=25 --daemon
 ###EOF
 EOF
 ## rclone union
