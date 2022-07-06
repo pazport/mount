@@ -25,8 +25,8 @@ logdocker " -------------------------------"
 logdocker " -->      STOP DOCKERS      <---"
 logdocker " -->    MERGERFS CRASHED    <---"
 logdocker " -------------------------------"
-container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'plex|arr|emby|jelly')
-docker stop $container >> /dev/null
+#container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'plex|arr|emby|jelly')
+#docker stop $container >> /dev/null
 sleep 2
 }
 function restart_container() {
@@ -34,13 +34,13 @@ logdocker " -------------------------------"
 logdocker " -->   RESTART DOCKER PART  <---"
 logdocker " -->         STARTED        <---"
 logdocker " -------------------------------"
-container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'plex|arr|emby|jelly')
-docker stop $container >> /dev/null
+#container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'plex|arr|emby|jelly')
+#docker stop $container >> /dev/null
 logdocker " -->> sleeping 5secs for graceful stopped containers <<--"
 sleep 5
-container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'plex|arr|emby|jelly')
+#container=$(docker ps -aq --format '{{.Names}}' | sed '/^$/d' | grep -E 'plex|arr|emby|jelly')
 #### LIST SOME DOCKER TO RESTART ####
-docker start $container >> /dev/null
+#docker start $container >> /dev/null
 logdocker " -------------------------------"
 logdocker " -->   RESTART DOCKER PART  <---"
 logdocker " -->        FINISHED        <---"
