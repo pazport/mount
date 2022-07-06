@@ -8,6 +8,6 @@ function log() {
 
 umask 022
 vfsrefresh="/app/vfs/vfsrefresh.sh"
-sleep 12h
+sleep 5
 
 exec $vfsrefresh
