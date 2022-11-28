@@ -44,7 +44,6 @@ echo "
 SMOUNT=/config/scripts
 SRC=/config/rc-refresh
 SDOWN=/mnt/downloads
-SUNION=/mnt/unionfs
 TMPRCLONE=${TMPRCLONE}
 LOGS=/config/logs
 chown -hR abc:abc ${LOGS} && chmod -R 775 ${LOGS}
@@ -56,8 +55,6 @@ config=/config/rclone/rclone-docker.conf
 ##### RUN MOUNT #####
 if [[ ! -d ${TMPRCLONE} ]];then mkdir -p ${TMPRCLONE} && chown -hR abc:abc ${TMPRCLONE}  && chmod -R 775 ${TMPRCLONE};fi
 if [[ ! -d "/mnt/remotes" ]];then mkdir -p /mnt/remotes && chown -hR abc:abc /mnt/remotes && chmod -R 775 /mnt/remotes;fi
-if [[ ! -d "/mnt/unionfs" ]];then mkdir -p ${SUNION} && chown -hR abc:abc ${SUNION} && chmod -R 775 ${SUNION};fi
-if [[ -f ${SMOUNT}/union-mount.sh ]];then rm -rf ${SMOUNT}/union-mount.sh;fi
 if [[ -f ${SRC}/union-rc-file.sh ]];then rm -rf ${SRC}/union-rc-file.sh;fi
 truncate -s 0 /config/logs/**.log >> /dev/null
 echo -n "/mnt/downloads=RW:/mnt/remotes=RW" >>/tmp/rclone-mount.file
