@@ -118,7 +118,7 @@ cat <<'EOF' > ${SRC}/union-rc-file.sh
 # environment
 source /config/env/rclone.env
 config=/config/rclone/rclone-docker.conf
-# rclone command
+# mclone command
 
 mclone rc vfs/refresh recursive=true \
        --rc-user=${RC_USER} --rc-pass=${RC_PASSWORD}  \
@@ -130,5 +130,5 @@ mclone rc vfs/refresh recursive=true \
 EOF
 chmod a+x ${SRC}/union-rc-file.sh && chown -hR abc:abc ${SRC}/union-rc-file.sh
 chown -hR abc:abc ${TMPRCLONE}
-log "-->> rclone rc refresh file created for union <<--"
+log "-->> mclone rc refresh file created for union <<--"
 #EOF#

@@ -33,5 +33,5 @@ mv /usr/bin/sclone /usr/bin/mclone
 chown abc:abc /usr/bin/mclone 1>/dev/null 2>&1
 chmod 775 /usr/bin/mclone 1>/dev/null 2>&1
 log "-> Mclone installed :) <- [MOUNT]"
-log "-> Installed rclone Version $(mclone --version | awk '{print $2}' | head -n 1 | sed -e 's/v//g' | cut -c1-6) <- [MOUNT]"
+log "-> Installed mclone Version $(mclone --version | awk '{print $2}' | head -n 1 | sed -e 's/v//g' | cut -c1-6) <- [MOUNT]"
 #EOF#
